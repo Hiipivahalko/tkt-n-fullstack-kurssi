@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import personService from './service/personsService';
 import Puhelinluettelo from './components/Puhelinluettelo';
+import './index.css'
 
 
 
@@ -12,7 +12,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      message: null
     }
   }
 
@@ -31,24 +32,36 @@ class App extends React.Component {
   }
 
   handleFilterChange = (event) => {
+    console.log('jou')
     this.setState({ filter: event.target.value })
   }
 
-  handleDelete = (id) => {
+  handleDelete = (person) => {
     
     console.log('poistettiin')
-    const person = this.state.persons.filter(p => p.id !== id)
-    console.log(id)
-    if (window.confirm(`poistetaanko ${person.name}?`)) {
+    //const person = this.state.persons.filter(p => p.id !== id)
+    //console.log(id)
+    return () => {
+      if (window.confirm(`Haluatko varmasti poistaa henkilön ${person.name}?`)) {
         personService
-          .remove(id)
-          .then(person => {
-            const persons = this.state.persons.filter(p => p.id !== id)
+          .remove(person.id)
+          .then(res => {
             this.setState({
-              persons: persons
+              persons: this.state.persons.filter(p => p.id !== person.id),
+              message: `${person.name} poistettiin`
             })
-          }) 
+            
+          })
+        setTimeout(() => {
+          this.setState({
+            message: null
+          })
+        }, 5000)  
+      }
+     
     }
+         
+    
   }
 
   addPerson = (event) => {
@@ -70,16 +83,59 @@ class App extends React.Component {
             this.setState({
               persons: this.state.persons.concat(response),
               newName: '',
-              newNumber: ''
+              newNumber: '',
+              message: `${personObject.name} lisättiin onnistuneesti`
             })
           })
+          setTimeout(() => {
+            this.setState({
+              message: null
+            })
+          }, 5000)  
       } else {
-        alert('kyseinen nimi löytyy jo')
-        this.setState({
-          newName: '',
-          newNumber: ''
-        })
+        if (window.confirm(`kyseinen hekilö löytyy, update?`)){
+          const person = this.state.persons.find(p => p.name === personObject.name)
+          this.updatePerson(person.id)
+        } else {
+          this.setState({
+            newName: '',
+            newNumber: ''
+          })
+        }
+        //alert('kyseinen nimi löytyy jo')
+        
       }
+  }
+
+  updatePerson = (id) => {
+    console.log('hei')
+    
+      console.log('ollaanko täällä')
+      const personToUpdate = this.state.persons.find(p => p.id === id)
+      const changedPerson = { ...personToUpdate, number: this.state.newNumber }
+
+      personService
+        .update(id, changedPerson)
+        .then(newP => {
+          
+          this.setState({
+            persons: this.state.persons.map(person => person.id !== id ? person : changedPerson),
+            newName: '',
+            newNumber: '',
+            message: `numero ${changedPerson.number} vaihdettiin henkilölle ${changedPerson.name} onnistuneesti`
+          })
+        })
+        .catch(error => {
+          alert(`henkilo ${changedPerson.name} on jo valitettavasti poistettu palvelusta`)
+          console.log(changedPerson.name)
+          
+        })
+        setTimeout(() => {
+          this.setState({
+            message: null
+          })
+        }, 5000)  
+    
   }
 
   componentDidMount() {

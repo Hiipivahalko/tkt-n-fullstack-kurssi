@@ -3,7 +3,7 @@ import Person from './Person'
 
 const Persons = ({ persons, filter, handleDelete }) => (
 
-    <div>
+    <div className="person">
         <table>
           <tbody>
             {persons.filter(person => person.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1)

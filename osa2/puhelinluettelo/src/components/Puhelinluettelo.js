@@ -1,10 +1,16 @@
 import React from 'react'
 import Persons from './Persons'
 import AddMember from './AddMember'
+import Notification from './Notification'
+
 
 const Puhelinluettelo = ({ props }) => (
     <div>
-        <h2>Puhelinluettelo</h2>
+        <h1>Puhelinluettelo</h1>
+        <div className="succes">
+        <Notification message={props.state.message} />
+        </div>
+        
         rajaa näytettäviä: <input value={props.state.filter} onChange={props.handleFilterChange} />
         <AddMember value={props.state.newName}
           value2={props.state.newNumber}
