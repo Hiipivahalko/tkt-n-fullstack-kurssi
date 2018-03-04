@@ -2,11 +2,14 @@
 
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpIiwiaWQiOiI1YTkzMDFkNjc3YmMyYTRjMTYzMWM1MWMiLCJpYXQiOjE1MTk5MDg3MTZ9.BagYv6cLZjxV1ce-4sw9q4imyqfK_ORhb8TdMLdy1O8
+
+
 
 {
-    "title": "jou män",
-    "author": "ossi",
-    "url": "juppi blogi",
-    "likes": 7,
-    "userId": "5a928e2e92b2e6272ae02446"
+    "title": "token testi",
+    "author": "",
+    "url": "www.test.fi",
+    "likes": 1000,
+    "userId": "5a98419c03b4973a60a691c4"
 }

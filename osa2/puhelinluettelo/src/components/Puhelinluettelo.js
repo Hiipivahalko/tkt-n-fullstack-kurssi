@@ -7,7 +7,7 @@ import Notification from './Notification'
 const Puhelinluettelo = ({ props }) => (
     <div>
         <h1>Puhelinluettelo</h1>
-        <div className="succes">
+        <div >
         <Notification message={props.state.message} />
         </div>
         

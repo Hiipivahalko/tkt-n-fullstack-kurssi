@@ -19,11 +19,11 @@ mongoose
     console.log(err)
   })
 
-
+app.use(middleware.getTokenFrom)
 app.use(cors())
 app.use(bodyParser.json())
 app.use(middleware.logger)
-app.use(middleware.getTokenFrom)
+
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)

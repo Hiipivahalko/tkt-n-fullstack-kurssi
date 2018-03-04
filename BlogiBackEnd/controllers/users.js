@@ -23,7 +23,8 @@ userRouter.post('/', async (request, response) => {
 
         const saltRounds = 10
         const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
+        console.log(passwordHash)
+        console.log(body.password)
         const user = new User({
             username: body.username,
             name: body.name,
@@ -33,7 +34,7 @@ userRouter.post('/', async (request, response) => {
 
         const savedUser = await user.save()
 
-        response.json(User.format(savedUser))
+        response.json(savedUser)
     } catch (exception) {
         console.log(exception)
         response.status(500).json({ error: 'something went wrong'})
